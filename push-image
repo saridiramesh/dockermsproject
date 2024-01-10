@@ -1,0 +1,29 @@
+PUSHING:
+
+pipeline {
+    agent any 
+    
+    stages {
+        stage('checkout') {
+            steps {
+                git 'https://github.com/saridiramesh/dockermsproject.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'docker build -t $img .'
+            }
+        }
+        stage('tag') {
+            steps {
+                sh 'docker tag $img $repo'
+            }
+        }
+        stage('push') {
+            steps {
+                sh 'docker login -u saridiramesh -p $password'
+                sh 'docker push $repo'
+            }
+        }
+    }
+}
